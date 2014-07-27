@@ -47,11 +47,24 @@ class ListenVolume extends OscListener {
   }
 }
 
+class ListenClear extends OscListener {
+  function void receiveEvent(OscEvent event) {
+    event.getInt() => int chan;
+    event.getInt() => int shouldClear;
+
+    if (shouldClear) {
+      <<< "chan", chan, "clear" >>>;
+      loop[chan].clear();
+    }
+  }
+}
+
 ListenRecording listenRecording;
 ListenFeedback listenFeedback;
 ListenVolume listenVolume;
+ListenClear listenClear;
 
-adc => dac;
+/* adc => dac; */
 
 for (0 => int i; i < 4; i++) {
   adc => loop[i] => dac;
@@ -70,6 +83,7 @@ for (0 => int i; i < 4; i++) {
 spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);
 spork ~ listenFeedback.listenOnOsc("/feedback, i f", 3000);
 spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
+spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
 
 <<< "starting main loop..." >>>;
 
