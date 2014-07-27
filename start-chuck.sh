@@ -7,4 +7,5 @@
 # )) &
 
 echo "ChucK => started"
-chuck --loop --bufsize4096 --in1
+# chuck --loop --bufsize4096 --in1
+chuck --loop --in1
