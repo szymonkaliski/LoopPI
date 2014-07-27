@@ -10,5 +10,6 @@
 # jackd -d dummy -r -p 8
 
 
-jackd -P70 -p16 -dalsa -dhw:1,0 -p2048 -r44100 -i1 -o2 -n3 -s
+# jackd -P70 -p16 -dalsa -dhw:1,0 -p2048 -r44100 -i1 -o2 -n3 -s
+jackd -P70 -p16 -dalsa -dhw:1,0 -p1024 -r44100 -i1 -o2 -n3 -s
 
