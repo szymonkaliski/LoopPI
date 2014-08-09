@@ -120,8 +120,8 @@ spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);
 spork ~ listenFeedback.listenOnOsc("/feedback, i f", 3000);
 spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
-spork ~ listenGlobalGain.listenOnOsc("/global/gain, f", 3000);
-spork ~ listenDuration.listenOnOsc("/global/duration, f", 3000);
+spork ~ listenGlobalGain.listenOnOsc("/global-gain, f", 3000);
+spork ~ listenDuration.listenOnOsc("/global-duration, f", 3000);
 
 <<< "starting main loop..." >>>;
 
