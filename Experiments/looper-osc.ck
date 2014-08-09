@@ -73,21 +73,9 @@ class ListenGlobalGain extends OscListener {
     event.getFloat() => float value;
     maxGain * value => value;
 
-    <<< "global volume", value >>>
+    <<< "global volume", value >>>;
     value => passGain.gain;
     value => looperGain.gain;
-  }
-}
-
-class ListenDuration extends OscListener {
-  function void receiveEvent(OscEvent, event) {
-    event.getFloat() => float value;
-    1:second * value => value;
-
-    <<< "loop duration", value >>>
-    for (0 => int i; i < 4; i++) {
-      value => loop[i].duration;
-    }
   }
 }
 
@@ -96,7 +84,6 @@ ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
 ListenGlobalGain listenGlobalGain;
-ListenDuration listenDuration;
 
 adc => passGain => dac;
 
@@ -121,7 +108,6 @@ spork ~ listenFeedback.listenOnOsc("/feedback, i f", 3000);
 spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
 spork ~ listenGlobalGain.listenOnOsc("/global-gain, f", 3000);
-spork ~ listenDuration.listenOnOsc("/global-duration, f", 3000);
 
 <<< "starting main loop..." >>>;
 
