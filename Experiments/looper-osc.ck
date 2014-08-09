@@ -64,10 +64,14 @@ ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
 
-/* adc => dac; */
+adc => Gain passGain => dac;
+0.5 => passGain.gain;
+
+Gain looperGain;
+0.5 => looperGain.gain;
 
 for (0 => int i; i < 4; i++) {
-  adc => loop[i] => dac;
+  adc => loop[i] => looperGain;
   10::second => loop[i].duration;
 
   loop[i].rate(1.0);
@@ -77,6 +81,8 @@ for (0 => int i; i < 4; i++) {
 
   <<< "settings up loop: ", i, " duration: ", loop[i].duration() >>>;
 }
+
+looperGain => dac;
 
 <<< "sporking osc listeners..." >>>;
 
