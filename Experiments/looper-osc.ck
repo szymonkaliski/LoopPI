@@ -3,10 +3,9 @@ LiSa loop[4];
 float maxGain;
 0.5 => maxGain;
 
-Gain passGain;
+/* Gain passGain; */
 Gain looperGain;
 
-maxGain => passGain.gain;
 maxGain => looperGain.gain;
 
 class OscListener {
@@ -68,24 +67,12 @@ class ListenClear extends OscListener {
   }
 }
 
-class ListenGlobalGain extends OscListener {
-  function void receiveEvent(OscEvent event) {
-    event.getFloat() => float value;
-    maxGain * value => value;
-
-    <<< "global volume", value >>>;
-    value => passGain.gain;
-    value => looperGain.gain;
-  }
-}
-
 ListenRecording listenRecording;
 ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
-ListenGlobalGain listenGlobalGain;
 
-adc => passGain => dac;
+/* adc => passGain => dac; */
 
 for (0 => int i; i < 4; i++) {
   adc => loop[i] => looperGain;
@@ -107,7 +94,7 @@ spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);
 spork ~ listenFeedback.listenOnOsc("/feedback, i f", 3000);
 spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
-spork ~ listenGlobalGain.listenOnOsc("/global-gain, f", 3000);
+/* spork ~ listenGlobalGain.listenOnOsc("/global-gain, f", 3000); */
 
 <<< "starting main loop..." >>>;
 
