@@ -15,6 +15,7 @@ gainOut => looperGain.gain;
 if (passGainEnabled) {
   Gain passGain;
   gainIn => passGain.gain;
+  adc => passGain => dac;
 }
 
 class OscListener {
@@ -80,10 +81,6 @@ ListenRecording listenRecording;
 ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
-
-if (passGainEnabled) {
-  adc => passGain => dac;
-}
 
 adc => inputGain;
 looperGain => dac;
