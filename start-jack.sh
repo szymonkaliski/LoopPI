@@ -15,6 +15,9 @@
 # jackd -P70 -p512 -dalsa -dhw:1,0 -p1024 -r44100 -i1 -o2 -n3 -s
 # jackd -P70 -p8 -dalsa -dhw:1,0 -r44100 -i1 -o2 -n4 -s -S
 # jackd -p8 -dalsa -dhw:1,0 -r44100 -i1 -o2 -n4 -s -S -p4096
-# jackd -r -p4 -dalsa -dhw:1,0 -r44100 -i1 -o2 -n4 -s -S -p2048 -znone
-jackd -p8 -dalsa -dhw:1,0 -i1 -o2 -n4 -s -S -p4096 -znone
+# jackd -p8 -dalsa -dhw:1,0 -r44100 -i1 -o2 -n4 -s -S -p2048 -znone
+# jackd -p8 -dalsa -dhw:1,0 -i1 -o2 -n4 -s -S -p4096 -znone
+# jackd -p8 -dalsa -dhw:1,0 -i1 -o2 -n4 -s -S -p2048 -znone
 
+# jackd -P70 -p8 -dalsa -dhw:1,0 -r44100 -i1 -o2 -n4 -s -S -znone
+jackd -P70 -p8 -dalsa -dhw:1,0 -i1 -o2 -n3 -r44100 -s -S -znone

@@ -1,12 +1,21 @@
 LiSa loop[4];
 
-float maxGain;
-0.5 => maxGain;
+0 => int passGainEnabled;
 
-/* Gain passGain; */
+float gainIn, gainOut;
+1 => gainIn;
+1 => gainOut;
+
 Gain looperGain;
+Gain inputGain;
 
-maxGain => looperGain.gain;
+gainIn => inputGain.gain;
+gainOut => looperGain.gain;
+
+if (passGainEnabled) {
+  Gain passGain;
+  gainIn => passGain.gain;
+}
 
 class OscListener {
   function void listenOnOsc(string msg, int port) {
@@ -72,10 +81,15 @@ ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
 
-/* adc => passGain => dac; */
+if (passGainEnabled) {
+  adc => passGain => dac;
+}
+
+adc => inputGain;
+looperGain => dac;
 
 for (0 => int i; i < 4; i++) {
-  adc => loop[i] => looperGain;
+  inputGain => loop[i] => looperGain;
   10::second => loop[i].duration;
 
   loop[i].rate(1.0);
@@ -85,8 +99,6 @@ for (0 => int i; i < 4; i++) {
 
   <<< "settings up loop: ", i, " duration: ", loop[i].duration() >>>;
 }
-
-looperGain => dac;
 
 <<< "sporking osc listeners..." >>>;
 
