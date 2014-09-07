@@ -2,6 +2,7 @@
   "name": "Controller",
   "version": "0.0.0",
   "dependencies": {
-    "lcd": "^0.2.4"
+    "lcd": "^0.2.4",
+    "onoff": "^0.3.2"
   }
 }
