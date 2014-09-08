@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "dependencies": {
     "lcd": "^0.2.4",
+    "omgosc": "^1.0.0",
     "onoff": "^0.3.2"
   }
 }

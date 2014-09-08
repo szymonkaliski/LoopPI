@@ -24,37 +24,54 @@ var sn74151 = new SN74151({
 	in: 8
 });
 
+var LoopControl = require("./looop-control");
+var loopControls = [];
+
+for (var i = 0; i < 4; i++) {
+	loopControls[i] = new LoopControl(i, mcp3008, sn74151);
+}
+
 var padNumber = function(number, padding) { 
 	return (1e15 + number + "").slice(-padding);
 };
 
 lcd.on("ready", function() {
 	setInterval(function() {
-		lcd.home();
-		var readings = [];
-		for (var i = 0; i < 8; i++) {
-			readings[i] = sn74151.read(i);
-			readings[i + 8] = padNumber(mcp3008.read(i), 3);
-		}
+		var readings = loopControls.map(function(loop) {
+			loop.update();
+			return loop.get();
+		});
 
-		// lcd.clear();
-		lcd.print(readings);
-		// console.log(readings);
+		var printReading = function(reading) {
+			var print = [
+				reading.record,
+				reading.clear,
+				padNumber(reading.volume, 3),
+				padNumber(reading.feedback, 3)
+			].join(" ");
 
-		// lcd.home();
-		// for (var i = 0; i < 4; i++) {
-		// 	lcd.setCursor(i * 3, 1);
-		// 	lcd.print(padNumber(mcp3008.read(i), 3));
-		// }
+			lcd.print(print);
+		};
 
-		// lcd.home();
-		// for (var i = 0; i < 4; i++) {
-		// 	lcd.setCursor(i * 3, 2);
-		// 	lcd.print(padNumber(mcp3008.read(4 + i), 3));
-		// }
-	}, 400);
+		lcd.setCursor(0, 0);
+		printReading(readings[0]);
+
+		lcd.once("printed", function() {
+			lcd.setCursor(0, 1);
+			printReading(readings[1]);
+
+			lcd.once("printed", function() {
+				lcd.setCursor(0, 2);
+				printReading(readings[2]);
+
+				lcd.once("printed", function() {
+					lcd.setCursor(0, 3);
+					printReading(readings[3]);
+				});
+			});
+		});
+	}, 250);
 });
-
 
 process.on("SIGINT", function() {
 	lcd.clear();

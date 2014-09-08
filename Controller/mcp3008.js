@@ -53,7 +53,7 @@ MCP3008.prototype.clockedRead = function() {
 		value += reading ? Math.pow(i, 2) : 0;
 	}
 
-	return Math.ceil(value / 4);
+	return Math.ceil(value / 4) / 127;
 };
 
 module.exports = MCP3008;
