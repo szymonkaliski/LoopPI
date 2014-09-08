@@ -1,6 +1,5 @@
 var OSC = require("omgosc");
 var sender = new OSC.UdpSender("127.0.0.1", 3000);
-var debounce = require("debounce");
 
 function LoopControl(number, mcp3008, sn74151) {
 	this.mcp3008 = mcp3008;
