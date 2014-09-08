@@ -40,7 +40,6 @@ class ListenRecording extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int status;
 
-    <<< "chan", chan, "recording", status >>>;
     loop[chan].record(status);
   }
 }
@@ -50,7 +49,6 @@ class ListenFeedback extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    <<< "chan", chan, "feedback", value >>>;
     loop[chan].feedback(value);
   }
 }
@@ -60,7 +58,6 @@ class ListenVolume extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    <<< "chan", chan, "volume", value >>>;
     loop[chan].voiceGain(0, value);
   }
 }
@@ -70,10 +67,7 @@ class ListenClear extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int shouldClear;
 
-    if (shouldClear) {
-      <<< "chan", chan, "clear" >>>;
-      loop[chan].clear();
-    }
+    if (shouldClear) { loop[chan].clear(); }
   }
 }
 
@@ -93,19 +87,12 @@ for (0 => int i; i < 4; i++) {
   loop[i].play(1);
   loop[i].loop(1);
   loop[i].feedback(1);
-
-  <<< "settings up loop: ", i, " duration: ", loop[i].duration() >>>;
 }
-
-<<< "sporking osc listeners..." >>>;
 
 spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);
 spork ~ listenFeedback.listenOnOsc("/feedback, i f", 3000);
 spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
-/* spork ~ listenGlobalGain.listenOnOsc("/global-gain, f", 3000); */
-
-<<< "starting main loop..." >>>;
 
 while (true) {
   1::second => now;
