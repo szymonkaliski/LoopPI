@@ -9,7 +9,7 @@ function MCP3008(settings) {
 	this.cs = new Gpio(settings.cs, "out");
 	this.in = new Gpio(settings.in, "in");
 	this.out = new Gpio(settings.out, "out");
-};
+}
 
 MCP3008.prototype.read = function(input) {
 	this.cs.writeSync(1);
@@ -44,11 +44,12 @@ MCP3008.prototype.clockedWrite = function(bits) {
 MCP3008.prototype.clockedRead = function() {
 	var i;
 	var value = 0;
+	var reading = 0;
 
 	for (i = 12; i > 0; i--) {
 		this.clock.writeSync(1);
 		this.clock.writeSync(0);
-		var reading = this.in.readSync();
+		reading = this.in.readSync();
 
 		value += reading ? Math.pow(i, 2) : 0;
 	}
