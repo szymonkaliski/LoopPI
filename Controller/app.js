@@ -45,11 +45,13 @@ lcd.on("ready", function() {
 
 		var printReading = function(reading) {
 			var print = [
-				reading.record,
-				reading.clear,
+				" ",
+				reading.record ? "RECORD" : "      ",
+				" | ",
 				padNumber(reading.volume, 3),
-				padNumber(reading.feedback, 3)
-			].join(" ");
+				" | ",
+				padNumber(reading.feedback, 3),
+			].join("");
 
 			lcd.print(print);
 		};
@@ -71,7 +73,7 @@ lcd.on("ready", function() {
 				});
 			});
 		});
-	}, 250);
+	}, 200);
 });
 
 process.on("SIGINT", function() {
