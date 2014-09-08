@@ -24,7 +24,7 @@ var sn74151 = new SN74151({
 	in: 8
 });
 
-var LoopControl = require("./looop-control");
+var LoopControl = require("./loop-control");
 var loopControls = [];
 var i;
 
