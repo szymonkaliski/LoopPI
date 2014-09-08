@@ -9,7 +9,7 @@ var logStd = function(spawned) {
 };
 
 // start jack
-var jackd = spawn("jackd", [ "-P70", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
+var jackd = spawn("jackd", [ "-P60", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
 logStd(jackd);
 
 // wait 1 second and start chuck
@@ -20,7 +20,8 @@ setTimeout(function() {
 
 // wait another second and start controller app
 setTimeout(function() {
-	require(__dirname + "/Controller/app");
+	var controller = spawn("node", [ __dirname + "/Controller/app.js" ]);
+	logStd(controller);
 }, 2000);
 
 process.on("SIGINT", function() {

@@ -73,7 +73,7 @@ lcd.on("ready", function() {
 				});
 			});
 		});
-	}, 200);
+	}, 500);
 });
 
 process.on("SIGINT", function() {
