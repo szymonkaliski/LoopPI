@@ -26,8 +26,9 @@ var sn74151 = new SN74151({
 
 var LoopControl = require("./looop-control");
 var loopControls = [];
+var i;
 
-for (var i = 0; i < 4; i++) {
+for (i = 0; i < 4; i++) {
 	loopControls[i] = new LoopControl(i, mcp3008, sn74151);
 }
 

@@ -9,7 +9,7 @@ function SN74151(settings) {
 	this.b = new Gpio(settings.b, "out");
 	this.c = new Gpio(settings.c, "out");
 	this.in = new Gpio(settings.in, "in");
-};
+}
 
 SN74151.prototype.read = function(input) {
 	var bits = this.toBinary(input);
