@@ -6,8 +6,8 @@ function LoopControl(number, mcp3008, sn74151) {
 	this.sn74151 = sn74151;
 
 	this.index = number;
-	this.recordIndex = 2 * number;
-	this.clearIndex = 2 * number + 1;
+	this.recordIndex = 2 * number + 1;
+	this.clearIndex = 2 * number;
 	this.volumeIndex = 2 * number;
 	this.feedbackIndex = 2 * number + 1;
 

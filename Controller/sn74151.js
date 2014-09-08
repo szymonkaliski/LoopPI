@@ -13,9 +13,9 @@ function SN74151(settings) {
 
 SN74151.prototype.read = function(input) {
 	var bits = this.toBinary(input);
-	this.a.writeSync(bits[0]);
+	this.c.writeSync(bits[0]);
 	this.b.writeSync(bits[1]);
-	this.c.writeSync(bits[2]);
+	this.a.writeSync(bits[2]);
 
 	return this.in.readSync();
 };
