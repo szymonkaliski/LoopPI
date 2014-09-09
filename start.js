@@ -18,7 +18,7 @@ var niceSpawn = function(priority, args) {
 };
 
 // start jack
-niceSpawn(priorities.jackd, [ "jackd", "-P60", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
+niceSpawn(priorities.jackd, [ "jackd", "-P70", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
 
 // start chuck and controller after timeout
 setTimeout(function() {
