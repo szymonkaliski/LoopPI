@@ -22,8 +22,8 @@ niceSpawn(priorities.jackd, [ "jackd", "-P70", "-p8", "-dalsa", "-dhw:1,0", "-i1
 
 // start chuck and controller after timeout
 setTimeout(function() {
-	niceSpawn(priorities.chuck, [ "chuck", "--in1", __dirname + "/Looper/looper.ck"]);
 	niceSpawn(priorities.node, [ "node", __dirname + "/Controller/app.js" ]);
+	niceSpawn(priorities.chuck, [ "chuck", "--bufsize:4096", "--adaptive:1024", "--srate:44100", "--in1", __dirname + "/Looper/looper.ck"]);
 }, 4000);
 
 process.on("SIGINT", function() {
