@@ -1,8 +1,8 @@
 var spawn = require("child_process").spawn;
 
 var priorities = {
-	jackd: "-15",
-	chuck: "-10",
+	jackd: "-10",
+	chuck: "-15",
 	node: "10"
 };
 
@@ -22,7 +22,7 @@ niceSpawn(priorities.jackd, [ "jackd", "-P70", "-p8", "-dalsa", "-dhw:1,0", "-i1
 
 // start chuck and controller after timeout
 setTimeout(function() {
-	niceSpawn(priorities.chuck, [ "chuck", "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
+	niceSpawn(priorities.chuck, [ "chuck", "--in1", __dirname + "/Looper/looper.ck"]);
 	niceSpawn(priorities.node, [ "node", __dirname + "/Controller/app.js" ]);
 }, 4000);
 
