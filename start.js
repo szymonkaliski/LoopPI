@@ -9,13 +9,12 @@ var logStd = function(spawned) {
 };
 
 // start jack
-var jackd = spawn("jackd", [ "-P60", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
+var jackd = spawn("nice", [ "-n", "-10", "jackd", "-P60", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
 logStd(jackd);
 
 // start chuck and controller after timeout
 setTimeout(function() {
-	// var chuckLooper = spawn("chuck", [ "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
-	var chuckLooper = spawn("nice", [ "-n", "-10", "chuck", "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
+	var chuckLooper = spawn("nice", [ "-n", "-5", "chuck", "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
 	logStd(chuckLooper)
 
 	var controller = spawn("node", [ __dirname + "/Controller/app.js" ]);
