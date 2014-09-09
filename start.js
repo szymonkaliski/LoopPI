@@ -1,6 +1,15 @@
 var spawn = require("child_process").spawn;
 
-var logStd = function(spawned) {
+var priorities = {
+	jackd: "-15",
+	chuck: "-10",
+	node: "10"
+};
+
+var niceSpawn = function(priority, args) {
+	var spawnArgs = [ "-n", priority ].concat(args);
+	var spawned = spawn("nice", spawnArgs);
+
 	[ "stdout", "stderr" ].forEach(function(key) {
 		spawned[key].on("data", function(data) {
 			console.log(data.toString());
@@ -9,16 +18,12 @@ var logStd = function(spawned) {
 };
 
 // start jack
-var jackd = spawn("nice", [ "-n", "-10", "jackd", "-P60", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
-logStd(jackd);
+niceSpawn(priorities.jackd, [ "jackd", "-P60", "-p8", "-dalsa", "-dhw:1,0", "-i1", "-o2", "-n3", "-r44100", "-s", "-S", "-znone" ]);
 
 // start chuck and controller after timeout
 setTimeout(function() {
-	var chuckLooper = spawn("nice", [ "-n", "-5", "chuck", "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
-	logStd(chuckLooper)
-
-	var controller = spawn("node", [ __dirname + "/Controller/app.js" ]);
-	logStd(controller);
+	niceSpawn(priorities.chuck, [ "chuck", "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
+	niceSpawn(priorities.node, [ "node", [ __dirname + "/Controller/app.js" ]);
 }, 4000);
 
 process.on("SIGINT", function() {
@@ -26,3 +31,4 @@ process.on("SIGINT", function() {
 	spawn("killall", [ "jackd" ]);
 	process.exit();
 });
+
