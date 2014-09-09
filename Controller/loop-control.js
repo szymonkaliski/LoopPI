@@ -15,7 +15,7 @@ function LoopControl(number, mcp3008, sn74151) {
 	this.knobs = {
 		volume: { index: 2 * number, value: 0 },
 		feedback: { index: 2 * number + 1, value: 0 }
-	}
+	};
 }
 
 LoopControl.prototype.update = function() {
@@ -28,8 +28,8 @@ LoopControl.prototype.updateButtons = function() {
 		var reading = !this.sn74151.read(this.buttons[key].index);
 
 		if (reading == true && this.buttons[key].prev == false) {
-			this.buttons[key].value = !this.buttons[key].value
-			this.send(key)
+			this.buttons[key].value = !this.buttons[key].value;
+			this.send(key);
 		}
 		else if (this.buttons[key].type === "bang") {
 			this.buttons[key].value = false;
