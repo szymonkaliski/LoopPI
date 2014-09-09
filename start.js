@@ -14,7 +14,8 @@ logStd(jackd);
 
 // start chuck and controller after timeout
 setTimeout(function() {
-	var chuckLooper = spawn("chuck", [ "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
+	// var chuckLooper = spawn("chuck", [ "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
+	var chuckLooper = spawn("nice", [ "-n", "-10", "chuck", "--in1", "--adaptive:512", __dirname + "/Looper/looper.ck"]);
 	logStd(chuckLooper)
 
 	var controller = spawn("node", [ __dirname + "/Controller/app.js" ]);
