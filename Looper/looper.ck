@@ -3,7 +3,7 @@ LiSa loop[4];
 0 => int passGainEnabled;
 
 float gainIn, gainOut;
-1 => gainIn;
+0.75 => gainIn;
 1 => gainOut;
 
 Gain looperGain;
@@ -95,5 +95,5 @@ spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
 
 while (true) {
-  1::second => now;
+  8::second => now;
 }
