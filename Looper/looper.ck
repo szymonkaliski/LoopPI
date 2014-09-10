@@ -83,7 +83,7 @@ adc => inputGain;
 looperGain => dac;
 
 for (0 => int i; i < 4; i++) {
-  8::second => loop[i].duration;
+  6::second => loop[i].duration;
   0::samp => loop[i].recPos => loop[i].playPos;
 
   1 => loop[i].play;
