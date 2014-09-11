@@ -40,6 +40,7 @@ class ListenRecording extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int status;
 
+    if (status) { loop[chan].playPos => loop[chan].recPos; }
     loop[chan].record(status);
   }
 }
@@ -67,10 +68,7 @@ class ListenClear extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int shouldClear;
 
-    if (shouldClear) {
-      loop[chan].clear();
-      0::samp => loop[chan].recPos => loop[chan].playPos;
-    }
+    if (shouldClear) { loop[chan].clear(); }
   }
 }
 
@@ -100,5 +98,5 @@ spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
 
 while (true) {
-  10::second => now;
+  1::second => now;
 }
