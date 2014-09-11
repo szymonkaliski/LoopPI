@@ -2,8 +2,8 @@ var spawn = require("child_process").spawn;
 
 var priorities = {
 	jackd: "-10",
-	chuck: "-10",
-	node: "10"
+	chuck: "-15",
+	node: "15"
 };
 
 var options = {
