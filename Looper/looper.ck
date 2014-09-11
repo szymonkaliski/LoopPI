@@ -81,7 +81,7 @@ adc => inputGain;
 looperGain => dac;
 
 for (0 => int i; i < 4; i++) {
-  8::second => loop[i].duration;
+  6::second => loop[i].duration;
   0::samp => loop[i].recPos => loop[i].playPos;
 
   1 => loop[i].play;
@@ -98,5 +98,5 @@ spork ~ listenVolume.listenOnOsc("/volume, i f", 3000);
 spork ~ listenClear.listenOnOsc("/clear, i i", 3000);
 
 while (true) {
-  1::second => now;
+  10::second => now;
 }
