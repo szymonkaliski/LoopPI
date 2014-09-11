@@ -40,7 +40,7 @@ class ListenRecording extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int status;
 
-    status => loop[chan].loopRec;
+    loop[chan].record(status);
   }
 }
 
@@ -49,7 +49,7 @@ class ListenFeedback extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    value => loop[chan].feedback;
+    loop[chan].feedback(value);
   }
 }
 
@@ -58,7 +58,7 @@ class ListenVolume extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    value => loop[chan].voiceGain;
+    loop[chan].voiceGain(0, value);
   }
 }
 
