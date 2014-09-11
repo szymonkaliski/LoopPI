@@ -40,7 +40,7 @@ class ListenRecording extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int status;
 
-    if (status) { loop[chan].playPos => loop[chan].recPos; }
+    if (status) { loop[chan].playPos() => loop[chan].recPos; }
     loop[chan].record(status);
   }
 }
