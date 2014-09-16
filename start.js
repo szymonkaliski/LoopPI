@@ -17,7 +17,8 @@ var options = {
 		"-n3",
 		"-r44100",
 		// "-p2048",
-		"-p4096",
+		// "-p4096",
+		"-p8192",
 		"-s",
 		"-S",
 		"-znone"
@@ -25,7 +26,8 @@ var options = {
 	node: [ __dirname + "/Controller/app.js" ],
 	chuck: [
 		// "--adaptive2048",
-		"--adaptive4096",
+		// "--adaptive4096",
+		"--adaptive8192",
 		// "--bufsize2048",
 		// "--bufsize4096",
 		// "--bufsize8192",
