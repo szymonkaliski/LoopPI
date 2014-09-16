@@ -1,4 +1,5 @@
 LiSa loop[4];
+int loopChucked[4];
 
 0 => int passGainEnabled;
 
@@ -60,6 +61,15 @@ class ListenVolume extends OscListener {
     event.getFloat() => float value;
 
     loop[chan].voiceGain(0, value);
+
+    if (value < 0.01) {
+      loop[chan] =< looperGain;
+      0 => loopChucked[chan];
+    }
+    else if (!loopChucked[chan]) {
+      loop[chan] => looperGain;
+      1 => loopChucked[chan];
+    }
   }
 }
 
@@ -88,7 +98,9 @@ for (0 => int i; i < 4; i++) {
   1 => loop[i].loopRec;
   1 => loop[i].maxVoices;
 
-  inputGain => loop[i] => looperGain;
+  inputGain => loop[i];
+
+  0 => loopChucked[i];
 }
 
 spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);

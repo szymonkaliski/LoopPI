@@ -25,8 +25,9 @@ var options = {
 	node: [ __dirname + "/Controller/app.js" ],
 	chuck: [
 		// "--adaptive2048",
-		// "--adaptive4096",
-		"--bufsize4096",
+		"--adaptive4096",
+		// "--bufsize2048",
+		// "--bufsize4096",
 		// "--bufsize8192",
 		"--srate44100",
 		"--in1",
