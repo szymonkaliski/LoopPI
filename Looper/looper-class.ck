@@ -1,22 +1,36 @@
-LiSa loop[4];
+class Loop {
+  LiSa loop;
 
-0 => int passGainEnabled;
+  fun void init(Gain input) {
+    input => loop => dac;
+    8::second => loop.duration;
 
-float gainIn, gainOut;
-0.75 => gainIn;
-1 => gainOut;
+    1 => loop.play;
+    1 => loop.loop;
+    1 => loop.loopRec;
+    1 => loop.maxVoices;
+  }
 
-Gain looperGain;
-Gain inputGain;
+  fun void record(int status) {
+    if (status) { loop.playPos() => loop.recPos; }
 
-gainIn => inputGain.gain;
-gainOut => looperGain.gain;
+    loop.record(status);
+  }
 
-if (passGainEnabled) {
-  Gain passGain;
-  gainIn => passGain.gain;
-  adc => passGain => dac;
+  fun void clear(int status) {
+    if (status) { loop.clear(); }
+  }
+
+  fun void volume(float value) {
+    loop.voiceGain(0, value);
+  }
+
+  fun void feedback(float value) {
+    loop.feedback(value);
+  }
 }
+
+Loop loop[4];
 
 class OscListener {
   function void listenOnOsc(string msg, int port) {
@@ -40,7 +54,6 @@ class ListenRecording extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int status;
 
-    if (status) { loop[chan].playPos() => loop[chan].recPos; }
     loop[chan].record(status);
   }
 }
@@ -59,16 +72,16 @@ class ListenVolume extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    loop[chan].voiceGain(0, value);
+    loop[chan].volume(value);
   }
 }
 
 class ListenClear extends OscListener {
   function void receiveEvent(OscEvent event) {
     event.getInt() => int chan;
-    event.getInt() => int shouldClear;
+    event.getInt() => int status;
 
-    if (shouldClear) { loop[chan].clear(); }
+    loop[chan].clear(status);
   }
 }
 
@@ -77,18 +90,13 @@ ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
 
+Gain inputGain;
+
+0.75 => inputGain.gain;
 adc => inputGain;
-looperGain => dac;
 
 for (0 => int i; i < 4; i++) {
-  8::second => loop[i].duration;
-
-  1 => loop[i].play;
-  1 => loop[i].loop;
-  1 => loop[i].loopRec;
-  1 => loop[i].maxVoices;
-
-  inputGain => loop[i] => looperGain;
+  loop[i].init(inputGain);
 }
 
 spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);

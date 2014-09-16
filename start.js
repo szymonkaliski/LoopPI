@@ -31,7 +31,9 @@ var options = {
 		// "--bufsize8192",
 		"--srate44100",
 		"--in1",
-		__dirname + "/Looper/looper.ck"
+		// __dirname + "/Looper/looper.ck"
+		// __dirname + "/Looper/looper-single.ck"
+		__dirname + "/Looper/looper-class.ck"
 	]
 };
 
@@ -56,8 +58,8 @@ setTimeout(function() {
 }, 4000);
 
 process.on("SIGINT", function() {
-	// force kill jack
-	spawn("killall", [ "jackd" ]);
+	// force kill if didn't exit clearly
+	spawn("killall", [ "jackd", "chuck" ]);
 	process.exit();
 });
 

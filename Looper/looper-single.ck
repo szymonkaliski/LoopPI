@@ -1,21 +1,21 @@
-LiSa loop[4];
-
-0 => int passGainEnabled;
-
-float gainIn, gainOut;
-0.75 => gainIn;
-1 => gainOut;
-
-Gain looperGain;
+LiSa loop;
 Gain inputGain;
 
-gainIn => inputGain.gain;
-gainOut => looperGain.gain;
+dur loopLength;
+8::second => loopLength;
+4 * loopLength => loop.duration;
+4 => loop.maxVoices;
+0.75 => inputGain.gain;
 
-if (passGainEnabled) {
-  Gain passGain;
-  gainIn => passGain.gain;
-  adc => passGain => dac;
+adc => inputGain => loop => dac;
+
+for (0 => int i; i < 4; i++) {
+  loop.loopStart(i, i * loopLength);
+  loop.loopEnd(i, (i + 1) * loopLength);
+  loop.play(i, 1);
+  loop.loop(i, 1);
+
+  <<< i, loop.loopStart(i), loop.loopEnd(i) >>>;
 }
 
 class OscListener {
@@ -40,8 +40,8 @@ class ListenRecording extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int status;
 
-    if (status) { loop[chan].playPos() => loop[chan].recPos; }
-    loop[chan].record(status);
+    if (status) { loop.recPos(loop.playPos(chan)); }
+    loop.record(status);
   }
 }
 
@@ -50,7 +50,7 @@ class ListenFeedback extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    loop[chan].feedback(value);
+    loop.feedback(value);
   }
 }
 
@@ -59,8 +59,33 @@ class ListenVolume extends OscListener {
     event.getInt() => int chan;
     event.getFloat() => float value;
 
-    loop[chan].voiceGain(0, value);
+    loop.voiceGain(chan, value);
   }
+}
+
+// FIXME: not working!
+fun void clear(int chan) {
+  float startPos, endPos;
+  int sample;
+
+  loop.record(0);
+  loop.recPos(loop.loopStart(chan));
+
+  loop.loopStart(chan) / 1::samp => startPos;
+  loop.loopEnd(chan) / 1::samp => endPos;
+  startPos $ int => sample;
+
+  <<< "clearing...", sample::samp >>>;
+
+  while (sample < endPos) {
+    (0, sample::samp) => loop.valueAt;
+    sample++;
+
+    // advance time to avoid drops
+    if (sample % 32 == 0) { 10::samp => now; }
+  }
+
+  <<< "cleared!", sample::samp >>>;
 }
 
 class ListenClear extends OscListener {
@@ -68,7 +93,9 @@ class ListenClear extends OscListener {
     event.getInt() => int chan;
     event.getInt() => int shouldClear;
 
-    if (shouldClear) { loop[chan].clear(); }
+    if (shouldClear) {
+      clear(chan);
+    }
   }
 }
 
@@ -76,20 +103,6 @@ ListenRecording listenRecording;
 ListenFeedback listenFeedback;
 ListenVolume listenVolume;
 ListenClear listenClear;
-
-adc => inputGain;
-looperGain => dac;
-
-for (0 => int i; i < 4; i++) {
-  8::second => loop[i].duration;
-
-  1 => loop[i].play;
-  1 => loop[i].loop;
-  1 => loop[i].loopRec;
-  1 => loop[i].maxVoices;
-
-  inputGain => loop[i] => looperGain;
-}
 
 spork ~ listenRecording.listenOnOsc("/recording, i i", 3000);
 spork ~ listenFeedback.listenOnOsc("/feedback, i f", 3000);
