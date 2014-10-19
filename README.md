@@ -1,9 +1,5 @@
 # LoopPI
 
-4 track audio looper working on Raspberry PI, made with ChucK and Node.js
-
-## About
-
 LoopPI is standalone audio looper made with Raspberry PI, with audio part in ChucK, and interface (8 hardware buttons and 8 potentiometers) in Node.js. You can see it in action in [this video](https://vimeo.com/108919777).
 
 Each row of controls consists of two buttons and two potentiometeres. First button toggles recording on and off, second one clears the loop, first potentiometer controlls the loop volume, and second one controls feedback.
