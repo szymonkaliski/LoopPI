@@ -1,4 +1,7 @@
-var spawn = require("child_process").spawn;
+var spawn    = require("child_process").spawn;
+var chuckApp = "Looper/looper-class.ck";
+var nodeApp  = "Controller/app.js";
+var buffer   = 2048;
 
 var priorities = {
 	jackd: "-10",
@@ -8,6 +11,7 @@ var priorities = {
 
 var options = {
 	jackd: [
+		"-r",
 		"-P80",
 		"-p8",
 		"-dalsa",
@@ -16,32 +20,26 @@ var options = {
 		"-o2",
 		"-n3",
 		"-r44100",
-		// "-p2048",
-		// "-p4096",
-		"-p8192",
+		("-p" + buffer),
 		"-s",
 		"-S",
 		"-znone"
 	],
-	node: [ __dirname + "/Controller/app.js" ],
+	node: [
+		__dirname + "/" + nodeApp
+	],
 	chuck: [
-		// "--adaptive2048",
-		// "--adaptive4096",
-		"--adaptive8192",
-		// "--bufsize2048",
-		// "--bufsize4096",
-		// "--bufsize8192",
+		("--adaptive" + buffer),
+		// ("--bufsize" + buffer)
 		"--srate44100",
 		"--in1",
-		// __dirname + "/Looper/looper.ck"
-		// __dirname + "/Looper/looper-single.ck"
-		__dirname + "/Looper/looper-class.ck"
+		__dirname + "/" + chuckApp
 	]
 };
 
 var niceSpawn = function(priority, args) {
 	var spawnArgs = [ "-n", priority ].concat(args);
-	var spawned = spawn("nice", spawnArgs);
+	var spawned   = spawn("nice", spawnArgs);
 
 	[ "stdout", "stderr" ].forEach(function(key) {
 		spawned[key].on("data", function(data) {
@@ -55,7 +53,7 @@ niceSpawn(priorities.jackd, [ "jackd" ].concat(options.jackd));
 
 // start chuck and controller after timeout
 setTimeout(function() {
-	niceSpawn(priorities.node, [ "node" ].concat(options.node));
+	niceSpawn(priorities.node,  [ "node" ].concat(options.node));
 	niceSpawn(priorities.chuck, [ "chuck" ].concat(options.chuck));
 }, 4000);
 
