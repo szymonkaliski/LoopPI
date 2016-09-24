@@ -1,5 +1,7 @@
 # LoopPI
 
+**This project is deprecated**, I moved on and now I'm using Raspberry PI3, and Wolfson audio card for easier and more powerful setup with better sound quality: [LoopPI2](https://github.com/szymonkaliski/LoopPI2).
+
 LoopPI is standalone audio looper made with Raspberry PI, with audio part in ChucK, and interface (8 hardware buttons and 8 potentiometers) in Node.js. You can see it in action in [this video](https://vimeo.com/108919777).
 
 Each row of controls consists of two buttons and two potentiometeres. First button toggles recording on and off, second one clears the loop, first potentiometer controlls the loop volume, and second one controls feedback.
